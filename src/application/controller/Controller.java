@@ -81,8 +81,7 @@ public class Controller implements Initializable {
     pw = new PrintWriter(os);
     bufferedReader = new BufferedReader(new InputStreamReader(is));
 
-
-    Thread t = new Thread(()->{
+    Thread t = new Thread(() -> {
       while (true) {
         String msgFromServer = null;
         try {
@@ -93,7 +92,7 @@ public class Controller implements Initializable {
         if (msgFromServer.contains("Player")) {
           System.out.println(msgFromServer);
           this.pid = msgFromServer.charAt(msgFromServer.length() - 1) - '0';
-          information.setText("Player"+pid);
+          information.setText("Player" + pid);
           continue;
         } else if (msgFromServer.equals("Waiting for another player")) {
           System.out.println(msgFromServer);
@@ -105,8 +104,8 @@ public class Controller implements Initializable {
           information.setText("Your turn");
         } else if (msgFromServer.contains(",")) {
           String finalMsgFromServer = msgFromServer;
-          Platform.runLater(()->{
-            refreshBoard(Integer.parseInt(finalMsgFromServer.split(",")[0]),Integer.parseInt(
+          Platform.runLater(() -> {
+            refreshBoard(Integer.parseInt(finalMsgFromServer.split(",")[0]), Integer.parseInt(
                 finalMsgFromServer.split(",")[1]));
             TURN = !TURN;
           });
@@ -115,7 +114,7 @@ public class Controller implements Initializable {
         } else {
           System.out.println(msgFromServer);
           String finalMsgFromServer1 = "end";
-          Platform.runLater(()->{
+          Platform.runLater(() -> {
             information.setText(finalMsgFromServer1);
           });
         }
@@ -124,7 +123,7 @@ public class Controller implements Initializable {
     t.start();
 
     game_panel.setOnMouseClicked(event -> {
-      if (text.equals("please input your position")){
+      if (text.equals("please input your position")) {
         int x = (int) (event.getX() / BOUND);
         int y = (int) (event.getY() / BOUND);
         if (refreshBoard(x, y)) {
@@ -229,15 +228,15 @@ public class Controller implements Initializable {
         } catch (IOException e) {
           throw new RuntimeException(e);
         }
-          if (msgFromServer.contains("Player")) {
-            System.out.println(msgFromServer);
-            this.pid = msgFromServer.charAt(msgFromServer.length() - 1);
-            System.out.println(pid - '0');
-            continue;
-          } else if (msgFromServer.equals("Waiting for another player")) {
-            System.out.println(msgFromServer);
-            continue;
-          }
+        if (msgFromServer.contains("Player")) {
+          System.out.println(msgFromServer);
+          this.pid = msgFromServer.charAt(msgFromServer.length() - 1);
+          System.out.println(pid - '0');
+          continue;
+        } else if (msgFromServer.equals("Waiting for another player")) {
+          System.out.println(msgFromServer);
+          continue;
+        }
 //          } else if (msgFromServer.contains("请")) {
 //            System.out.println(msgFromServer);
 //            int x = input.nextInt();
@@ -252,14 +251,15 @@ public class Controller implements Initializable {
 //              drawCircle(x, y);
 //          }
         else if (msgFromServer.contains(",")) {
-            int x = Integer.parseInt(msgFromServer.split(",")[0]);
-            int y = Integer.parseInt(msgFromServer.split(",")[1]);
-            if (pid == 1) {
-              drawCircle(x, y);
-            } else
-              drawLine(x, y);
+          int x = Integer.parseInt(msgFromServer.split(",")[0]);
+          int y = Integer.parseInt(msgFromServer.split(",")[1]);
+          if (pid == 1) {
+            drawCircle(x, y);
+          } else {
+            drawLine(x, y);
           }
         }
       }
     }
   }
+}
